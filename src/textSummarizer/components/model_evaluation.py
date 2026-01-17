@@ -65,7 +65,7 @@ class ModelEvaluation:
             model,
             tokenizer,
             batch_size=2,
-            column_text="dialogue",
+            column_text="text",
             column_summary="summary"
         )
 

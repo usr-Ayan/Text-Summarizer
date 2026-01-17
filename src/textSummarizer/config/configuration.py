@@ -35,21 +35,17 @@ class ConfigurationManager:
 
         return data_ingestion_config
     
-        
     def get_data_validation_config(self) -> DataValidationConfig:
         config = self.config.data_validation
-
-        create_directories([Path(str(config.root_dir))])
-
-
-        data_validation_config = DataValidationConfig(
-            root_dir=Path(str(config.root_dir)),
+        create_directories([Path(config.root_dir)])
+        return DataValidationConfig(
+            root_dir=Path(config.root_dir),
+            data_path=Path(config.data_path),
             STATUS_FILE=config.STATUS_FILE,
-            ALL_REQUIRED_FILES=config.ALL_REQUIRED_FILES,
+            ALL_REQUIRED_FILES=config.ALL_REQUIRED_FILES
         )
+        
 
-
-        return data_validation_config
     
     def get_data_transformation_config(self) -> DataTransformationConfig:
         config = self.config.data_transformation

@@ -16,7 +16,7 @@ class DataTransformation:
 
     def convert_examples_to_features(self, example_batch):
         input_encodings = self.tokenizer(
-            example_batch['dialogue'],
+            example_batch['text'],
             max_length=1024,
             truncation=True
         )
@@ -37,7 +37,7 @@ class DataTransformation:
     def convert(self):
         dataset_samsum= load_from_disk(str(self.config.data_path))
         dataset_samsum_pt = dataset_samsum.map(self.convert_examples_to_features, batched=True)
-        dataset_samsum_pt.save_to_disk(os.path.join(self.config.root_dir, "samsum_dataset"))
+        dataset_samsum_pt.save_to_disk(os.path.join(self.config.root_dir, "inabs_dataset"))
     
 
 

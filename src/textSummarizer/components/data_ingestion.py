@@ -24,6 +24,7 @@ class DataIngestion:
         else:
             logger.info(f"File already exists of size: {get_size(Path(self.config.local_data_file))}")
 
+
     def extract_zip_file(self) :
         unzip_path = self.config.unzip_dir
         os.makedirs(unzip_path, exist_ok=True)
