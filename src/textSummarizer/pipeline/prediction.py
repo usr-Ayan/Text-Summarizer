@@ -46,14 +46,23 @@ class PredictionPipeline:
             return_tensors="pt"
         ).to(self.device)
 
+        # Safety fallback for eos_token_id
+        eos_id = self.tokenizer.eos_token_id if self.tokenizer.eos_token_id is not None else 1
+
         with torch.no_grad():
             ids = self.model.generate(
                 inputs["input_ids"],
+                attention_mask=inputs.get("attention_mask"), # Explicitly pass attention mask
                 min_length=min_len,
                 max_length=max_len,
                 num_beams=8,
                 length_penalty=1.0,
-                early_stopping=True
+                early_stopping=True,
+                # --- GENERATION GUARDRAILS ADDED BELOW ---
+                repetition_penalty=2.0,                  # Stops word loops
+                no_repeat_ngram_size=3,                  # Stops phrase loops
+                pad_token_id=self.tokenizer.pad_token_id, 
+                eos_token_id=eos_id                       
             )
 
         return self.tokenizer.decode(ids[0], skip_special_tokens=True)

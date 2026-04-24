@@ -20,14 +20,13 @@ data_validation:
 data_transformation:
   root_dir: artifacts/data_transformation
   data_path: artifacts/data_ingestion/inabs_dataset
-  tokenizer_name: google/pegasus-cnn_dailymail
+  tokenizer_name: nsi319/legal-pegasus
 
 # data path needs to be changed
 model_trainer:
   root_dir: artifacts/model_trainer
   data_path: artifacts/data_transformation/inabs_dataset
-  model_ckpt: google/pegasus-cnn_dailymail
-
+  model_ckpt: nsi319/legal-pegasus
 # data path needs to be changed
 model_evaluation:
   root_dir: artifacts/model_evaluation

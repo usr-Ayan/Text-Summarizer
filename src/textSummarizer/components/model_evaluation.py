@@ -35,9 +35,18 @@ class ModelEvaluation:
             inputs = tokenizer(article_batch, max_length=1024, truncation=True,
                                 padding="max_length", return_tensors="pt")
 
-            summaries = model.generate(input_ids=inputs["input_ids"].to(device),
-                                        attention_mask=inputs["attention_mask"].to(device),
-                                        length_penalty=0.8, num_beams=8, max_length=128)
+            # --- GENERATION GUARDRAILS ADDED HERE ---
+            summaries = model.generate(
+                input_ids=inputs["input_ids"].to(device),
+                attention_mask=inputs["attention_mask"].to(device),
+                length_penalty=0.8, 
+                num_beams=8, 
+                max_length=128,
+                repetition_penalty=2.0,             # Punishes the model heavily for repeating words
+                no_repeat_ngram_size=3,             # Prevents any 3-word phrase from appearing twice
+                pad_token_id=tokenizer.pad_token_id, # Explicitly tells it how to pad
+                eos_token_id=tokenizer.eos_token_id  # Explicitly tells it when to STOP
+            )
 
             decoded_summaries = [tokenizer.decode(s, skip_special_tokens=True,
                                                     clean_up_tokenization_spaces=True)
